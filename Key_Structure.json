@@ -1,0 +1,18 @@
+{
+    "password_hash": "",
+    "nickName": "",
+
+    "RSA_private_keys": {
+        "files": "",
+        "messages": "",
+        "other": ""
+    },
+
+    "friends_public_keys": [
+        {"nickname": "", "key": ""}
+    ],
+
+    "cryptocurrency_private_keys": [
+        {"type": "Ethereum", "key": ""}
+    ]
+}
