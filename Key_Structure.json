@@ -13,6 +13,6 @@
     ],
 
     "cryptocurrency_private_keys": [
-        {"type": "Ethereum", "key": ""}
+        {"type": "Ethereum", "name":"", "key": ""}
     ]
 }

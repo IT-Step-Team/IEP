@@ -8,13 +8,13 @@ from json import loads, dumps
 import os
 
 
-OUTPUT_PATH     = str(os.environ['USERPROFILE'] + r'\\Desktop\\')
-
-
 class keysFile():
+
+    OUTPUT_PATH = str(os.environ['USERPROFILE'] + r'\\Desktop\\')
 
     def _import(self, path, password):
         self.NOW_FILE   = {}
+        self.path       = path
 
         pass_hash       = SHA3_256.new(data = password.encode('utf-8')).digest()
 
@@ -36,6 +36,20 @@ class keysFile():
 
         return True
 
+    def save(self):
+        data        = dumps(self.NOW_FILE).encode('utf-8') # Перетворення dict в Json і переведення в байти
+        pass_hash   = bytes.fromhex(self.NOW_FILE['password_hash']) # Перетворив пароль з hex в байти
+
+        cipher_AES  = AES.new(pass_hash, AES.MODE_CFB) # Створення AES
+
+        with open(self.path, 'w') as File:
+            ct_bytes = cipher_AES.encrypt(data) # Шифрування AES
+
+            iv = b64encode(cipher_AES.iv).decode('utf-8')
+            ct = b64encode(ct_bytes).decode('utf-8')
+
+            File.write(str(f'{iv},{ct}'))
+            File.close()
 
     def new(self, password, nickName):
         FILE_STRUCTURE  = {}
@@ -60,7 +74,7 @@ class keysFile():
         cipher_AES      = AES.new(pass_hash, AES.MODE_CFB) # Створення AES
 
         # ЗАПИС ВСЬОГО В ФАЙЛ #
-        with open(OUTPUT_PATH + f'{str(nickName)}.keys', 'w') as File:
+        with open(self.OUTPUT_PATH + f'{str(nickName)}.keys', 'w') as File:
             ct_bytes = cipher_AES.encrypt(FILE_STRUCTURE) # Шифрування AES
 
             iv = b64encode(cipher_AES.iv).decode('utf-8')
@@ -70,32 +84,78 @@ class keysFile():
             File.close()
 
     def add_public_key(self, name, pubKey):
-        pass
+        for i in self.NOW_FILE['friends_public_keys']:
+            if name == i['nickname']:
+                return False
+
+        self.NOW_FILE['friends_public_keys'].append({'nickname': name, 'key': pubKey})
+        self.save()
 
     def del_public_key(self, name):
-        pass
+        a = 0 # Індекс масиву
+
+        for i in self.NOW_FILE['friends_public_keys']:
+            if name == i['nickname']:
+                del self.NOW_FILE['friends_public_keys'][a]
+                break            
+            a += 1
+
+        self.save()
 
     def change_name(self, newName):
-        pass
+        self.NOW_FILE['nickName'] = str(newName)
+        self.save()
 
     def change_password(self, oldPass, newPass):
-        pass
+        oldPass_hash = SHA3_256.new(data = oldPass.encode('utf-8')).hexdigest()
 
-    def add_cryptocurrency_private_key(self, type, privKey):
-        pass
+        if oldPass_hash == self.NOW_FILE['password_hash']:
+            newPass_hash = SHA3_256.new(data = newPass.encode('utf-8')).hexdigest()
 
-    def del_cryptocurrency_private_key(self, id):
-        pass
+            self.NOW_FILE['password_hash'] = newPass_hash
+            self.save()
+
+        else:
+            return False
+
+    def add_cryptocurrency_private_key(self, Ctype, name, privKey):
+        self.NOW_FILE['cryptocurrency_private_keys'].append({'type': Ctype, 'name': name, 'key': privKey})
+        self.save()
+
+    def del_cryptocurrency_private_key(self, name):
+        a = 0 # Індекс
+
+        for i in self.NOW_FILE['cryptocurrency_private_keys']:
+            if name == i['name']:
+                del self.NOW_FILE['cryptocurrency_private_keys'][a]
+                break
+            a += 1
+
+        self.save()
+
+    def get_nickName(self):
+        return self.NOW_FILE['nickName']
 
     def get_files_privKey(self):
-        pass
+        raw_key = b64decode(self.NOW_FILE['RSA_private_keys']['files'].encode('utf-8')) # Перетворили RSA ключ з b64
+        key     = RSA.import_key(raw_key)
+
+        return key
 
     def get_messages_privKey(self):
-        pass
+        raw_key = b64decode(self.NOW_FILE['RSA_private_keys']['messages'].encode('utf-8')) # Перетворили RSA ключ з b64
+        key     = RSA.import_key(raw_key)
+
+        return key
 
     def get_other_privKey(self):
-        pass
+        raw_key = b64decode(self.NOW_FILE['RSA_private_keys']['other'].encode('utf-8')) # Перетворили RSA ключ з b64
+        key     = RSA.import_key(raw_key)
 
+        return key
 
-# keysFile().new('Hello', 'DJI')
-keysFile()._import(r'C:\Users\Святослав\Desktop\DJI.keys', 'Hello')
+    def get_friends_pubKeys(self):
+        return self.NOW_FILE['friends_public_keys']
+
+    def get_cryptocurrency_privKeys(self):
+        return self.NOW_FILE['cryptocurrency_private_keys']
