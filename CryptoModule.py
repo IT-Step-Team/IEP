@@ -8,9 +8,30 @@ from json import loads, dumps
 import os
 
 
+# class main():
+#     def RSA_Encrypt(self, rsa_obj, data):
+#         data = str(data).encode('utf-8')
+
+#         if len(data) > 190:
+#             return False
+
+#         cipher      = PKCS1_OAEP.new(rsa_obj)
+#         cipherText  = cipher.encrypt(data)
+
+#         return b64encode(cipherText).decode('utf-8')
+
+#     def RSA_Decrypt(self, rsa_obj, data):
+#         data    = str(data).encode('utf-8')
+#         cipher  = PKCS1_OAEP.new(rsa_obj)
+
+#         text    = cipher.decrypt(b64decode(data))
+
+#         return text.decode('utf-8')
+
+
 class keysFile():
 
-    OUTPUT_PATH = str(os.environ['USERPROFILE'] + r'\\Desktop\\')
+    OUTPUT_PATH     = str(os.environ['USERPROFILE'] + r'\\Desktop\\')
 
     def _import(self, path, password):
         self.NOW_FILE   = {}
@@ -65,9 +86,9 @@ class keysFile():
         pass_hash = bytes.fromhex(pass_hash) # Перетворив пароль з hex в байти
 
         # ГЕНЕРАЦІЯ RSA 2048 КЛЮЧІВ І ЗАПИС ДО СТРУКТУРИ #
-        FILE_STRUCTURE['RSA_private_keys']['files']     = b64encode(RSA.generate(2048).export_key('DER')).decode('utf-8')
+        # FILE_STRUCTURE['RSA_private_keys']['files']     = b64encode(RSA.generate(2048).export_key('DER')).decode('utf-8')
         FILE_STRUCTURE['RSA_private_keys']['messages']  = b64encode(RSA.generate(2048).export_key('DER')).decode('utf-8')
-        FILE_STRUCTURE['RSA_private_keys']['other']     = b64encode(RSA.generate(2048).export_key('DER')).decode('utf-8')
+        # FILE_STRUCTURE['RSA_private_keys']['other']     = b64encode(RSA.generate(2048).export_key('DER')).decode('utf-8')
 
         FILE_STRUCTURE  = dumps(FILE_STRUCTURE).encode('utf-8') # Перетворення dict в Json і переведення в байти
 
@@ -97,10 +118,13 @@ class keysFile():
         for i in self.NOW_FILE['friends_public_keys']:
             if name == i['nickname']:
                 del self.NOW_FILE['friends_public_keys'][a]
-                break            
+
+                self.save()
+                return True     
+
             a += 1
 
-        self.save()
+        return False
 
     def change_name(self, newName):
         self.NOW_FILE['nickName'] = str(newName)
