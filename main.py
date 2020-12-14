@@ -1,6 +1,7 @@
 import eel
 
 from CryptoModule import keysFile
+from base64 import b64encode
 
 KEYSFILE = keysFile()
 
@@ -28,6 +29,13 @@ def add_friend_key(name, key):
 def del_friend_key(name):
     return KEYSFILE.del_public_key(name)
 
+
+# Get Public Key Page #
+@eel.expose
+def get_messages_pubKey():
+    rsa = KEYSFILE.get_messages_privKey()
+
+    return b64encode(rsa.publickey().export_key('DER')).decode('utf-8')
 
 
 

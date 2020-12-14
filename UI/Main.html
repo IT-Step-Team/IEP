@@ -203,6 +203,7 @@
                 <h1 id="Main_Logo"><img src="Icon.svg"> IMOVI Encryption</h1>
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                     <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-Friends" role="tab" aria-controls="v-pills-Friends" aria-selected="true">Friends List</a>
+                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-pubKey" role="tab" aria-controls="v-pills-Encrypt" aria-selected="false">My public key</a>
                     <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-Encrypt" role="tab" aria-controls="v-pills-Encrypt" aria-selected="false">Encrypt</a>
                     <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-Decrypt" role="tab" aria-controls="v-pills-Decrypt" aria-selected="false">Decrypt</a>
                     <!-- <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a> -->
@@ -212,7 +213,7 @@
                 <div class="tab-content" id="v-pills-tabContent">
                     <div class="tab-pane fade show active" id="v-pills-Friends" role="tabpanel" aria-labelledby="v-pills-home-Friends">
 
-                        <h2 id="Friends_list_title">Friends List</h2>
+                        <h2 id="Friends_list_title"><i class="fas fa-list"></i> Friends List</h2>
                         <form id="addFriend_form" class="form-inline" action="">
                             <div class="form-group mb-2">
                                 <label for="Add_Nickname" class="sr-only">Nickname</label>
@@ -222,14 +223,14 @@
                                 <label for="Add_PubKey" class="sr-only">Public Key</label>
                                 <input type="text" class="form-control" id="Add_PubKey" placeholder="Public key">
                             </div>
-                            <button type="button" class="btn btn-success mb-2" onclick=add_friend_key()>Add Friend</button>
+                            <button type="button" class="btn btn-success mb-2" onclick=add_friend_key()><i class="fas fa-plus"></i> Add Friend</button>
                         </form>
                         <form id="delFriend_form" class="form-inline">
                             <div class="form-group mb-2">
                                 <label for="Del_Nickname" class="sr-only">Nickname</label>
                                 <input type="text" class="form-control" id="Del_Nickname" placeholder="Nickname">
                             </div>
-                            <button type="button" class="btn btn-danger mb-2 mx-sm-3" onclick=del_friend_key()>Delete Friend</button>
+                            <button type="button" class="btn btn-danger mb-2 mx-sm-3" onclick=del_friend_key()><i class="fas fa-trash-alt"></i> Delete Friend</button>
                         </form>
                         <table id="Friends_list_table" class="table table-dark">
                             <thead>
@@ -241,6 +242,30 @@
                             <tbody id="friends_table_body">
                             </tbody>
                         </table>
+
+                    </div>
+
+                    <div class="tab-pane fade" id="v-pills-pubKey" role="tabpanel" aria-labelledby="v-pills-pubKey-tab">
+                        <div class="modal fade" id="Done_pubKey_copy" tabindex="-1" role="dialog" aria-labelledby="Create_file_title" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4 id="Done_file_creating_title">Your public key copied to clipboard!!!</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h2 id="pubKey_title"><i class="fas fa-key"></i> Your Public Key</h2>
+                        <textarea readonly class="form-control" id="pubKey_textarea" rows="6"></textarea>
+                        <button type="button" id="copy_pubKey_button" class="btn btn-success" onclick=copy_pubKey()><i class="fas fa-copy"></i> Copy</button>
                     </div>
                     <div class="tab-pane fade" id="v-pills-Encrypt" role="tabpanel" aria-labelledby="v-pills-Encrypt-tab">
                         

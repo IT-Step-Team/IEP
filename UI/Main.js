@@ -25,6 +25,11 @@ function table_init(arr) {
 
 }
 
+function insert_pubKey(key) {
+    element         = document.getElementById('pubKey_textarea')
+    element.value   = key
+}
+
 function auth(status) {
     if (status == false) {
         $('#Error_pass').modal();
@@ -33,6 +38,7 @@ function auth(status) {
         let main = document.getElementById('Main');
 
         eel.get_friends_keys() (table_init)
+        eel.get_messages_pubKey() (insert_pubKey)
 
         page.style.display = 'none';
         main.style.display = 'block';
@@ -100,4 +106,16 @@ function del_friend_key() {
     } else {
         eel.del_friend_key(name) (name_check);
     }
+}
+
+function copy_pubKey() {
+    let copyText = document.getElementById('pubKey_textarea');
+
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+
+    document.execCommand("copy");
+    window.getSelection().removeAllRanges();
+
+    $('#Done_pubKey_copy').modal();
 }

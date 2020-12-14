@@ -237,7 +237,7 @@ body {
     background-color: #28a745 !important;
 }
 
-#v-pills-Friends {
+#v-pills-Friends, #v-pills-pubKey {
     padding-left: 50px;
     padding-right: 50px;
 }
@@ -262,6 +262,26 @@ body {
     background-color: #16161b;
     border: 1px solid #32383e;
     border-radius: 5px;
+}
+
+#pubKey_title {
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-weight: normal;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+#pubKey_textarea {
+    background-color: #16161b;
+    border: 1px solid #32383e;
+    color: white;
+    resize: none;
+    margin-bottom: 20px;
+}
+
+#copy_pubKey_button {
+    float: right;
 }
 
 /* Main Page END*/
