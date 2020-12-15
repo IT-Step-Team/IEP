@@ -58,7 +58,7 @@
                 </div>
                 <input type="submit" onclick=login() id="btn" value="&#10140">
             </div>
-            <h5 id="New_keys_file" onclick=$('#Create_file').modal()>Create new keys file</h5>
+            <h5 id="New_keys_file" onclick="$('#Create_file').modal()">Create new keys file</h5>
         </div>
 
         <div class="modal fade" id="Create_file" tabindex="-1" role="dialog" aria-labelledby="Create_file_title" aria-hidden="true">
@@ -99,7 +99,7 @@
                     <div class="modal-header"></div>
                     <div class="modal-body">
                         <img src="Loading.svg" alt="Loading...">
-                        <h4 id="Loading_title">Loading... Wait a minute!</h4>
+                        <h4 id="Loading_title">Creating... Wait a minute!</h4>
                     </div>
                     <div class="modal-footer"></div>
                 </div>
@@ -293,7 +293,7 @@
                         <h2 id="Encrypt_title"><i class="fas fa-lock"></i> Encrypt Text</h2>
                         <form action="">
                             <div class="form-group row">
-                              <label for="Text_to_encrypt" class="col-sm-3 col-form-label labels">Text:</label>
+                              <label for="Text_to_encrypt" class="col-sm-3 col-form-label labels">Message:</label>
                               <div class="col-sm-8">
                                 <input type="text" maxlength="120" class="form-control" id="Text_to_encrypt">
                               </div>
@@ -311,7 +311,37 @@
                     </div>
 
                     <div class="tab-pane fade" id="v-pills-Decrypt" role="tabpanel" aria-labelledby="v-pills-Decrypt-tab">
+
+                        <div class="modal fade" id="error_decryption" tabindex="-1" role="dialog" aria-labelledby="Error_pass_title" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="Error_pass_title"><i class="fas fa-exclamation-circle"></i> Error</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h3 id="Error_pass_text">Decryption Error!!!</h3>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+
                         <h2 id="Decrypt_title"><i class="fas fa-lock-open"></i> Decrypt Ciphertext</h2>
+                        <form action="">
+                            <div class="form-group row">
+                              <label for="Text_to_decrypt" class="col-sm-3 col-form-label labels">Ciphertext:</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control" id="Text_to_decrypt">
+                              </div>
+                            </div>
+                            <button id="Decrypt_button" type="button" class="btn btn-success" onclick=Decrypt_text()><i class="fas fa-cogs"></i> Decrypt</button>
+                        </form>
+                        <textarea readonly class="form-control" id="Text_output" rows="3">--- Your Message Here ---</textarea>
                     </div>
                     <!-- <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div> -->
                 </div>

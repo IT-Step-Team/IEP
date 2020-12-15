@@ -148,3 +148,24 @@ function Encrypt_text() {
         eel._Encrypt(text, key) (Encryption_output);
     }
 }
+
+function Decryption_output(Text) {
+    if (Text == false) {
+        $('#error_decryption').modal();
+
+    } else {
+        let out     = document.getElementById('Text_output');
+        out.value   = Text;
+    }
+}
+
+function Decrypt_text() {
+    Ciphertext = document.getElementById('Text_to_decrypt').value;
+
+    if (Ciphertext == '' || Ciphertext == ' ') {
+        $('#error_decryption').modal();
+
+    } else {
+        eel._Decrypt(Ciphertext) (Decryption_output);
+    }
+}

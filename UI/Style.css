@@ -276,7 +276,7 @@ body {
     float: right;
 }
 
-#Encrypt_button {
+#Encrypt_button, #Decrypt_button {
     float: right;
     margin-right: 55px;
     margin-bottom: 40px;
@@ -287,7 +287,7 @@ body {
     font-size: 20px;
 }
 
-#Ciphertext_output {
+#Ciphertext_output, #Text_output {
     background-color: #16161b;
     border: 1px solid #32383e;
     color: white;

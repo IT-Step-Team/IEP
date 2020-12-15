@@ -56,6 +56,19 @@ def _Encrypt(text, pubKey):
         return False
 
 
+# Decrypt Page #
+@eel.expose
+def _Decrypt(cipherText):
+    try:
+        key     = KEYSFILE.get_messages_privKey()
+        cipher  = PKCS1_OAEP.new(key)
+
+        text    = cipher.decrypt(b64decode(cipherText.encode('utf-8'))).decode('utf-8')
+
+        return text
+    
+    except:
+        return False
 
 
 eel.start('Main.html', size = (1000, 800))
