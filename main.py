@@ -1,7 +1,10 @@
 import eel
 
 from CryptoModule import keysFile
-from base64 import b64encode
+from base64 import b64encode, b64decode
+
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
 
 KEYSFILE = keysFile()
 
@@ -36,6 +39,22 @@ def get_messages_pubKey():
     rsa = KEYSFILE.get_messages_privKey()
 
     return b64encode(rsa.publickey().export_key('DER')).decode('utf-8')
+
+
+# Encrypt Page #
+@eel.expose
+def _Encrypt(text, pubKey):
+    try:
+        key     = RSA.import_key(b64decode(pubKey.encode('utf-8')))
+        cipher  = PKCS1_OAEP.new(key)
+
+        cipherText = b64encode(cipher.encrypt(text.encode('utf-8'))).decode('utf-8')
+
+        return cipherText
+    
+    except:
+        return False
+
 
 
 

@@ -237,12 +237,12 @@ body {
     background-color: #28a745 !important;
 }
 
-#v-pills-Friends, #v-pills-pubKey {
+#v-pills-Friends, #v-pills-pubKey, #v-pills-Encrypt, #v-pills-Decrypt {
     padding-left: 50px;
     padding-right: 50px;
 }
 
-#Friends_list_title {
+#Friends_list_title, #pubKey_title, #Encrypt_title, #Decrypt_title {
     color: white;
     font-family: 'Poppins', sans-serif;
     font-weight: normal;
@@ -264,14 +264,6 @@ body {
     border-radius: 5px;
 }
 
-#pubKey_title {
-    color: white;
-    font-family: 'Poppins', sans-serif;
-    font-weight: normal;
-    margin-top: 20px;
-    margin-bottom: 40px;
-}
-
 #pubKey_textarea {
     background-color: #16161b;
     border: 1px solid #32383e;
@@ -283,5 +275,26 @@ body {
 #copy_pubKey_button {
     float: right;
 }
+
+#Encrypt_button {
+    float: right;
+    margin-right: 55px;
+    margin-bottom: 40px;
+}
+
+.labels {
+    color: white;
+    font-size: 20px;
+}
+
+#Ciphertext_output {
+    background-color: #16161b;
+    border: 1px solid #32383e;
+    color: white;
+    resize: none;
+    width: 575px;
+    text-align: center;
+}
+
 
 /* Main Page END*/

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>IMOVI Encryption</title>
 
     <script src="eel.js"></script>
@@ -267,11 +268,50 @@
                         <textarea readonly class="form-control" id="pubKey_textarea" rows="6"></textarea>
                         <button type="button" id="copy_pubKey_button" class="btn btn-success" onclick=copy_pubKey()><i class="fas fa-copy"></i> Copy</button>
                     </div>
+
                     <div class="tab-pane fade" id="v-pills-Encrypt" role="tabpanel" aria-labelledby="v-pills-Encrypt-tab">
-                        
+
+                        <div class="modal fade" id="error_encryption" tabindex="-1" role="dialog" aria-labelledby="Error_pass_title" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="Error_pass_title"><i class="fas fa-exclamation-circle"></i> Error</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h3 id="Error_pass_text">Encryption Error!!!</h3>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+
+                        <h2 id="Encrypt_title"><i class="fas fa-lock"></i> Encrypt Text</h2>
+                        <form action="">
+                            <div class="form-group row">
+                              <label for="Text_to_encrypt" class="col-sm-3 col-form-label labels">Text:</label>
+                              <div class="col-sm-8">
+                                <input type="text" maxlength="120" class="form-control" id="Text_to_encrypt">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="Select_pubKeys" class="col-sm-3 col-form-label labels">Public Key:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="Select_pubKeys">
+                                    </select>
+                                </div>
+                            </div>
+                            <button id="Encrypt_button" type="button" class="btn btn-success" onclick=Encrypt_text()><i class="fas fa-cogs"></i> Encrypt</button>
+                        </form>
+                        <textarea readonly class="form-control" id="Ciphertext_output" rows="6">--- Your Ciphertext Here ---</textarea>
                     </div>
+
                     <div class="tab-pane fade" id="v-pills-Decrypt" role="tabpanel" aria-labelledby="v-pills-Decrypt-tab">
-                        
+                        <h2 id="Decrypt_title"><i class="fas fa-lock-open"></i> Decrypt Ciphertext</h2>
                     </div>
                     <!-- <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div> -->
                 </div>

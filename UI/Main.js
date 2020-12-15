@@ -1,7 +1,10 @@
 
 function table_init(arr) {
     // eel.get_friends_keys() (table_init)
-    let table_body = document.getElementById('friends_table_body');
+    let table_body  = document.getElementById('friends_table_body');
+    let select      = document.getElementById('Select_pubKeys');
+
+    $('#Select_pubKeys option').remove();
 
     while (table_body.rows[0]) {
         table_body.deleteRow(0);
@@ -9,12 +12,15 @@ function table_init(arr) {
 
     if (arr.length == 0) {
         table_body.insertAdjacentHTML('beforeend', `<tr><th scope="row"><small style="font-size: 18px;" class="text-muted">You haven't friends public keys</small></th><td></td></tr>`);
+        select.insertAdjacentHTML('beforeend', `<option value="">You haven't public keys!</option>`);
     }
 
     for ( let i = 0; i < arr.length; i++) {
 
         let name = arr[i]['nickname'];
         let pkey = arr[i]['key'];
+
+        select.insertAdjacentHTML('beforeend', `<option value="${pkey}">${name}</option>`);
 
         if (pkey.length > 58) {
             pkey = pkey.slice(0, 50) + '...';
@@ -118,4 +124,27 @@ function copy_pubKey() {
     window.getSelection().removeAllRanges();
 
     $('#Done_pubKey_copy').modal();
+}
+
+
+function Encryption_output(Ciphertext) {
+    if (Ciphertext == false) {
+        $('#error_encryption').modal();
+
+    } else {
+        let out     = document.getElementById('Ciphertext_output');
+        out.value   = Ciphertext;
+    }
+}
+
+function Encrypt_text() {
+    text = document.getElementById('Text_to_encrypt').value;
+    key  = document.getElementById('Select_pubKeys').value;
+
+    if (text == '' || text == ' ' || key == '' || key == ' ') {
+        $('#error_encryption').modal();
+
+    } else {
+        eel._Encrypt(text, key) (Encryption_output);
+    }
 }
