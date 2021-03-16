@@ -76,12 +76,13 @@ class keysFile():
         FILE_STRUCTURE  = {}
         pass_hash       = SHA3_256.new(data = password.encode('utf-8')).hexdigest()
 
-        FILE_STRUCTURE['nickName']                      = str(nickName)
-        FILE_STRUCTURE['password_hash']                 = str(pass_hash)
+        FILE_STRUCTURE['nickName']                   = str(nickName)
+        FILE_STRUCTURE['password_hash']              = str(pass_hash)
 
-        FILE_STRUCTURE['friends_public_keys']           = []
-        FILE_STRUCTURE['cryptocurrency_private_keys']   = []
-        FILE_STRUCTURE['RSA_private_keys']              = {}
+        FILE_STRUCTURE['friends_public_keys']        = []
+        FILE_STRUCTURE['cryptocurrency_private_keys']= []
+        FILE_STRUCTURE['RSA_private_keys']           = {}
+        FILE_STRUCTURE['TelegramBot']                = {'api_id': '', 'api_hash': ''} # Інформація для телеграм бота
 
         pass_hash = bytes.fromhex(pass_hash) # Перетворив пароль з hex в байти
 
@@ -142,11 +143,11 @@ class keysFile():
         else:
             return False
 
-    def add_cryptocurrency_private_key(self, Ctype, name, privKey):
+    def add_cryptocurrency_private_key(self, Ctype, name, privKey): #Not Used
         self.NOW_FILE['cryptocurrency_private_keys'].append({'type': Ctype, 'name': name, 'key': privKey})
         self.save()
 
-    def del_cryptocurrency_private_key(self, name):
+    def del_cryptocurrency_private_key(self, name): #Not Used
         a = 0 # Індекс
 
         for i in self.NOW_FILE['cryptocurrency_private_keys']:
@@ -160,7 +161,7 @@ class keysFile():
     def get_nickName(self):
         return self.NOW_FILE['nickName']
 
-    def get_files_privKey(self):
+    def get_files_privKey(self): #Not Used
         raw_key = b64decode(self.NOW_FILE['RSA_private_keys']['files'].encode('utf-8')) # Перетворили RSA ключ з b64
         key     = RSA.import_key(raw_key)
 
@@ -172,7 +173,7 @@ class keysFile():
 
         return key
 
-    def get_other_privKey(self):
+    def get_other_privKey(self): #Not Used
         raw_key = b64decode(self.NOW_FILE['RSA_private_keys']['other'].encode('utf-8')) # Перетворили RSA ключ з b64
         key     = RSA.import_key(raw_key)
 
@@ -181,5 +182,19 @@ class keysFile():
     def get_friends_pubKeys(self):
         return self.NOW_FILE['friends_public_keys']
 
-    def get_cryptocurrency_privKeys(self):
+    def get_cryptocurrency_privKeys(self): #Not Used
         return self.NOW_FILE['cryptocurrency_private_keys']
+
+    ### Telegram User Bot func ###
+
+    def set_telegram_api(self, id, hash):
+        self.NOW_FILE['TelegramBot']['api_id']   = str(id)
+        self.NOW_FILE['TelegramBot']['api_hash'] = str(hash)
+
+        self.save()
+
+    def get_telegram_api_id(self):
+        return self.NOW_FILE['TelegramBot']['api_id']
+    
+    def get_telegram_api_hash(self):
+        return self.NOW_FILE['TelegramBot']['api_hash']

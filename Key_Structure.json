@@ -8,6 +8,11 @@
         "other": ""
     },
 
+    "TelegramBot": {
+        "api_id": "",
+        "api_hash": ""
+    },
+
     "friends_public_keys": [
         {"nickname": "", "key": ""}
     ],
