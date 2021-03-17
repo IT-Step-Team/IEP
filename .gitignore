@@ -2,3 +2,5 @@ __pycache__
 IMOVI Encryption.exe
 Key_Structure.json
 test.py
+*.session
+*.session-journal
