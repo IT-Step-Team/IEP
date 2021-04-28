@@ -1,4 +1,47 @@
 
+function qrCode_modal_copy() {
+    let copyText = document.getElementById('pubKey_textarea_modal');
+
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+
+    document.execCommand("copy");
+    window.getSelection().removeAllRanges();
+}
+
+function qrCode_modal(data, name, add=" public key:", del=true) {
+    let old = $('#QRcode_pubKey img');
+    if (old != null) {
+        old.remove();
+    }
+
+    let title = document.getElementById('table_item_text');
+    let key   = document.getElementById('pubKey_textarea_modal');
+    let qr    = document.getElementById('QRcode_pubKey');
+    let delB  = document.getElementById('table_item_del');
+
+    title.innerText = name + add;
+    key.value = data;
+
+    if (del == true) {
+        delB.setAttribute("onclick", `del_friend_key('${name}')`);
+    } else {
+        delB.style.display = 'none';
+    }
+
+    new QRCode(qr, {
+        text: data,
+        width: 300,
+        height: 300,
+        colorDark : "#ffffff",
+        colorLight : "#212529",
+        correctLevel : QRCode.CorrectLevel.H
+        });
+    
+    qr.style.title = "";
+    $('#table_item_modal').modal();
+}
+
 function table_init(arr) {
     // eel.get_friends_keys() (table_init)
     let table_body  = document.getElementById('friends_table_body');
@@ -23,10 +66,12 @@ function table_init(arr) {
         select.insertAdjacentHTML('beforeend', `<option value="${pkey}">${name}</option>`);
 
         if (pkey.length > 58) {
-            pkey = pkey.slice(0, 50) + '...';
+            pkeyShort = pkey.slice(0, 50) + '...';
+        } else {
+            pkeyShort = pkey;
         }
 
-        table_body.insertAdjacentHTML('beforeend', `<tr><th scope="row">${name}</th><td>${pkey}</td></tr>`);
+        table_body.insertAdjacentHTML('beforeend', `<tr onclick="qrCode_modal('${pkey}','${name}')"><th scope="row">${name}</th><td>${pkeyShort}</td></tr>`);
     }
 
 }
@@ -36,6 +81,7 @@ function insert_pubKey(key) {
     element.value   = key
 }
 
+// Init Function
 function auth(status) {
     if (status == false) {
         $('#Error_pass').modal();
@@ -73,8 +119,8 @@ function create_new_file() {
     eel.create_file(name, pass) (loading_end);
 }
 
-// Friend keys Functions
 
+// Friend keys Functions
 function name_exists(status) {
     if (status == false) {
         $('#error_name_exists').modal();
@@ -99,13 +145,14 @@ function name_check(status) {
     if (status == false) {
         $('#error_del_name').modal();
     } else {
+        $('#table_item_modal').modal('hide');
+        $('#info_del_name').modal();
+        
         eel.get_friends_keys() (table_init);
     }
 }
 
-function del_friend_key() {
-    let name = document.getElementById('Del_Nickname').value;
-
+function del_friend_key(name) {
     if (name == '' || name == ' ') {
         $('#error_del_name').modal();
 
@@ -114,6 +161,8 @@ function del_friend_key() {
     }
 }
 
+
+// Public Key Page
 function copy_pubKey() {
     let copyText = document.getElementById('pubKey_textarea');
 
@@ -127,6 +176,7 @@ function copy_pubKey() {
 }
 
 
+// Encrypt Key Page
 function Encryption_output(Ciphertext) {
     if (Ciphertext == false) {
         $('#error_encryption').modal();
@@ -149,6 +199,8 @@ function Encrypt_text() {
     }
 }
 
+
+// Decrypt Key Page
 function Decryption_output(Text) {
     if (Text == false) {
         $('#error_decryption').modal();

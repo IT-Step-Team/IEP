@@ -251,10 +251,6 @@ body {
 }
 
 #addFriend_form {
-    margin-bottom: 10px;
-}
-
-#delFriend_form {
     margin-bottom: 20px;
 }
 
@@ -296,5 +292,37 @@ body {
     text-align: center;
 }
 
+/* QRCode Item Modal */
 
-/* Main Page END*/
+#table_item_title {
+    color: #28a745;
+}
+
+#QRcode_pubKey img{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#table_item_text {
+    margin: 0px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif; 
+    font-weight: normal;
+    font-style: normal; 
+    font-size: 25px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+#pubKey_textarea_modal {
+    background-color: #16161b;
+    border: 1px solid #32383e;
+    width: 90%;
+    color: white;
+    resize: none;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* QRCode Item Modal END */
