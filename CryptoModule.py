@@ -8,30 +8,44 @@ from json import loads, dumps
 import os
 
 
-# class main():
-#     def RSA_Encrypt(self, rsa_obj, data):
-#         data = str(data).encode('utf-8')
+class Encryption():
+    AES_MODE    = AES.MODE_CBC
 
-#         if len(data) > 190:
-#             return False
+    PKCS5_PAD   = lambda self, x: x + (16 - len(x) % 16) * chr(16 - len(x) % 16)
+    PKCS5_UNPAD = lambda self, s: s[0:-ord(s[-1:])]
 
-#         cipher      = PKCS1_OAEP.new(rsa_obj)
-#         cipherText  = cipher.encrypt(data)
+    def encryptAES(self, pass_hash, data):
+        try:
+            cipher_AES = AES.new(pass_hash, self.AES_MODE)
 
-#         return b64encode(cipherText).decode('utf-8')
+            ct_bytes = cipher_AES.encrypt(bytes(self.PKCS5_PAD(data), encoding="utf8")) # Шифрування AES
 
-#     def RSA_Decrypt(self, rsa_obj, data):
-#         data    = str(data).encode('utf-8')
-#         cipher  = PKCS1_OAEP.new(rsa_obj)
+            iv = b64encode(cipher_AES.iv).decode('utf-8')
+            ct = b64encode(ct_bytes).decode('utf-8')
 
-#         text    = cipher.decrypt(b64decode(data))
+            return str(f'{iv},{ct}')
+        except:
+            return False
+    
+    def decryptAES(self, pass_hash, data):
+        try:
+            data = data.split(",") # [0] IV; [1] CT
 
-#         return text.decode('utf-8')
+            cipher_AES = AES.new(pass_hash, self.AES_MODE, b64decode(data[0]))
+
+            text = cipher_AES.decrypt(b64decode(data[1]))
+
+            return self.PKCS5_UNPAD(text).decode("utf8")
+        except:
+            return False
 
 
 class keysFile():
 
     OUTPUT_PATH     = str(os.environ['USERPROFILE'] + r'\\Desktop\\')
+
+    RSA_PUB_KEY_TYPE    = "DER"
+    RSA_PRIV_KEY_TYPE   = "DER"
 
     def _import(self, path, password):
         self.NOW_FILE   = {}
@@ -44,13 +58,12 @@ class keysFile():
                 raw_data = str(File.read())
 
                 File.close()
-        
-            iv          = b64decode(raw_data[ : raw_data.find(',')]) # Через кому оприділяємо змінну IV
-            ct_bytes    = b64decode(raw_data[raw_data.find(',') : ]) # Тут так само знаходимо зашифрований текст
+            
+            data = Encryption().decryptAES(pass_hash, raw_data)
 
-            cipher_AES  = AES.new(pass_hash, AES.MODE_CFB, iv=iv) # Підставляємо пароль і змінну IV до розшифрувальщика
+            if data == False : return False
 
-            self.NOW_FILE = loads(cipher_AES.decrypt(ct_bytes).decode('utf-8')) # Розшифровуємо і перетворюємо в dict
+            self.NOW_FILE = loads(data)
 
         except:
             return False # Якщо щось не так повертаємо False
@@ -58,18 +71,15 @@ class keysFile():
         return True
 
     def save(self):
-        data        = dumps(self.NOW_FILE).encode('utf-8') # Перетворення dict в Json і переведення в байти
+        data        = dumps(self.NOW_FILE) # Перетворення dict в Json Str
         pass_hash   = bytes.fromhex(self.NOW_FILE['password_hash']) # Перетворив пароль з hex в байти
 
-        cipher_AES  = AES.new(pass_hash, AES.MODE_CFB) # Створення AES
-
         with open(self.path, 'w') as File:
-            ct_bytes = cipher_AES.encrypt(data) # Шифрування AES
+            enc_data = Encryption().encryptAES(pass_hash, data)
 
-            iv = b64encode(cipher_AES.iv).decode('utf-8')
-            ct = b64encode(ct_bytes).decode('utf-8')
+            if enc_data == False : return False
 
-            File.write(str(f'{iv},{ct}'))
+            File.write(enc_data)
             File.close()
 
     def new(self, password, nickName):
@@ -88,21 +98,18 @@ class keysFile():
 
         # ГЕНЕРАЦІЯ RSA 2048 КЛЮЧІВ І ЗАПИС ДО СТРУКТУРИ #
         # FILE_STRUCTURE['RSA_private_keys']['files']     = b64encode(RSA.generate(2048).export_key('DER')).decode('utf-8')
-        FILE_STRUCTURE['RSA_private_keys']['messages']  = b64encode(RSA.generate(2048).export_key('DER')).decode('utf-8')
+        FILE_STRUCTURE['RSA_private_keys']['messages']  = b64encode(RSA.generate(2048).export_key(self.RSA_PRIV_KEY_TYPE, pkcs=8)).decode('utf-8')
         # FILE_STRUCTURE['RSA_private_keys']['other']     = b64encode(RSA.generate(2048).export_key('DER')).decode('utf-8')
 
-        FILE_STRUCTURE  = dumps(FILE_STRUCTURE).encode('utf-8') # Перетворення dict в Json і переведення в байти
-
-        cipher_AES      = AES.new(pass_hash, AES.MODE_CFB) # Створення AES
+        FILE_STRUCTURE  = dumps(FILE_STRUCTURE) # Перетворення dict в Json String
 
         # ЗАПИС ВСЬОГО В ФАЙЛ #
         with open(self.OUTPUT_PATH + f'{str(nickName)}.keys', 'w') as File:
-            ct_bytes = cipher_AES.encrypt(FILE_STRUCTURE) # Шифрування AES
+            enc_data = Encryption().encryptAES(pass_hash, FILE_STRUCTURE)
 
-            iv = b64encode(cipher_AES.iv).decode('utf-8')
-            ct = b64encode(ct_bytes).decode('utf-8')
+            if enc_data == False : return False
 
-            File.write(str(f'{iv},{ct}'))
+            File.write(enc_data)
             File.close()
 
     def add_public_key(self, name, pubKey):
@@ -172,6 +179,11 @@ class keysFile():
         key     = RSA.import_key(raw_key)
 
         return key
+    
+    def get_messages_pubKey(self):
+        rsa = self.get_messages_privKey()
+
+        return b64encode(rsa.publickey().export_key(self.RSA_PUB_KEY_TYPE, pkcs=8)).decode("utf8")
 
     def get_other_privKey(self): #Not Used
         raw_key = b64decode(self.NOW_FILE['RSA_private_keys']['other'].encode('utf-8')) # Перетворили RSA ключ з b64
@@ -198,3 +210,7 @@ class keysFile():
     
     def get_telegram_api_hash(self):
         return self.NOW_FILE['TelegramBot']['api_hash']
+
+    ### Password Check Modal ###
+    def get_password_hash(self):
+        return self.NOW_FILE['password_hash']
