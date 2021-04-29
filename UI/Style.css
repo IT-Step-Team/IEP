@@ -337,7 +337,7 @@ body {
     color: white;
 }
 #KeySizeConst{
-    width: 62px;
+    width: 65px;
     margin-top: 27.5px;
     margin-left: 21px;
 }
@@ -364,12 +364,7 @@ body {
     margin-bottom: 7.5px;
     margin-left: 30px;
 }
-#bot_api{
-    margin-left: 7.5%;
-    font-family: 'Poppins', sans-serif;
-    margin-top: 25px;
-    width: 120px;
-}
+
 #exampleInputNickname{
     margin-top: 25px;
     width: 280px;
@@ -387,4 +382,25 @@ body {
 #KeyHashAlert{
     width: 85px;
 }
+/* Telegram Bot Info*/
+#Api_Tittle{
+    width: 60px;
+}
+#bot_api{
+    margin-left: 22px;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 25px;
+    width: 234px;
+}
+#bot_api_hash, #bot_password, #phone_number{
+    margin-top: 18px;
+    width: 234px;
+}
+#bot_api_hash{
+    margin-left: 8px;
+}
+#phone_number{
+    margin-left: 27px;
+}
+
 
