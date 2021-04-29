@@ -1,3 +1,9 @@
+###########################
+##  Crypto Module        ##
+##  Version: 2.0.0       ##
+##  By: DJI              ##
+###########################
+
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP, AES
 from Crypto.Hash import SHA3_256
