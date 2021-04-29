@@ -334,16 +334,16 @@ body {
     color: white;
 }
 #KeySizeConst{
-    width: 70px;
+    width: 62px;
     margin-top: 27.5px;
-    margin-left: 10px;
+    margin-left: 20px;
 }
 .first_labels{
     font-family: 'Poppins', sans-serif;
     padding-top: 35px;
     color: white;
 }
-tr {
+.settings_tr {
     display: inline-block 
 }
 #Save_Changes_Button{
