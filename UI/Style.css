@@ -324,6 +324,9 @@ body {
     margin-left: auto;
     margin-right: auto;
 }
+/* QRCode Item Modal END */
+
+
 .label, #Settings_title{
     font-family: 'Poppins', sans-serif;
     color: white;
@@ -336,7 +339,7 @@ body {
 #KeySizeConst{
     width: 62px;
     margin-top: 27.5px;
-    margin-left: 20px;
+    margin-left: 21px;
 }
 .first_labels{
     font-family: 'Poppins', sans-serif;
@@ -385,4 +388,3 @@ body {
     width: 85px;
 }
 
-/* QRCode Item Modal END */

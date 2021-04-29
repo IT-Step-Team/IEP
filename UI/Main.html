@@ -243,6 +243,84 @@
           </div>
       </div>
 
+      <!-- Settings Modal -->
+      <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 id="Settings_title"><i class="fas fa-cogs"></i> Settings</h2>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <h5 id="GeneralTitle">General</h5>
+                  <table>
+                    <tr class="settings_tr">
+                      <td><label class="first_labels" for="exampleInput1">Nickname:</label></td>
+                      <td><input type="nickname" class="form-control" id="exampleInputNickname" aria-describedby="nicknameHelp" placeholder="New Nickname"></td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="form-group">
+                  <table>
+                    <tr class="settings_tr">
+                      <td><label class = "label" for="exampleInputPassword1">Password:</label></td>
+                      <td>\<input type="password" class="form-control" id="exampleInputPassword" placeholder="New Password"></td>
+                    </tr>
+                  </table>
+                </div>
+              </form>
+              <form>
+                <div class="form-group">
+                  <h5 id="PrivateKeyTitle">Private Key</h5>
+                  <table>
+                    <tr class="settings_tr">
+                      <td><label class="first_labels" id = "key_size" for="Key_size">Key size:  </label></td>
+                      <td><input type="key" class="form-control" id="KeySizeConst" aria-describedby="keyHelp" placeholder="2048" disabled="disabled"></td>
+                    </tr>
+                  </table>
+                  </div>
+                <div class="form-group">
+                  <table>
+                    <tr class="settings_tr">
+                      <td><label class = "label" id="KeyHashAlert" for="exampleInputPassword1">Key Hash:</label></td>
+                      <td><input readonly type="password" class="form-control" id="KeyHash" placeholder=".......Key Hash.........."></td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="form-group">
+                  <table>
+                    <tr class="settings_tr">
+                      <td><label class = "label" for="PrivateKeyInfo">Private Key:</label></td>
+                      <td><button type="button" id="regenerate_button" class="btn btn-success"><i class="fas fa-cogs"></i> Regenerate</button></td>
+                      <td><button type="button" id="import_button" class="btn btn-danger"><i class="fas fa-file-download"></i> Export key</button></td>
+                    </tr>
+                  </table>
+                </div>
+              </form>
+              <form>
+                <div class="form-group">
+                  <h5 id="TelegramBotTitle">Telegram Bot</h5>
+                  <table>
+                    <tr class="settings_tr">
+                      <td><label class="first_labels" for="Key_size">Api Id:</label></td>
+                      <td><input type="key" id = "bot_api" class="form-control" id="KeySizeConst" aria-describedby="keyHelp" placeholder=".......Api......."></td>
+                    </tr>
+                  </table>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+              <button type="button" id = "Save_Changes_Button"class="btn btn-primary2"><i class="fas fa-save"></i> Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div> 
+
         <div class="row">
             <div class="col-3">
                 <h1 id="Main_Logo"><img src="Icon.svg"> IMOVI Encryption</h1>
@@ -251,7 +329,7 @@
                     <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-pubKey" role="tab" aria-controls="v-pills-Encrypt" aria-selected="false">My public key</a>
                     <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-Encrypt" role="tab" aria-controls="v-pills-Encrypt" aria-selected="false">Encrypt</a>
                     <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-Decrypt" role="tab" aria-controls="v-pills-Decrypt" aria-selected="false">Decrypt</a>
-                    <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+                    <a class="nav-link" id="v-pills-settings-tab" href="#" onclick="$('#settingsModal').modal();">Settings</a>
                 </div>
             </div>
             <div class="col-9">
@@ -380,88 +458,6 @@
                         </form>
                         <textarea readonly class="form-control" id="Text_output" rows="3">--- Your Message Here ---</textarea>
                     </div>
-                    <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                      <button type="button" id = "Change_Info_Button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Change Info
-                      </button>
-                      <!-- Modal -->
-                      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h2 id="Settings_title"><i class="fas fa-cogs"></i> Settings</h2>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <form>
-                                <div class="form-group" style="margin-bottom: 0;">
-                                  <h5 id="GeneralTitle">General</h5>
-                                  <table>
-                                    <tr class="settings_tr">
-                                      <td><label class="first_labels" for="exampleInput1">Nickname:</label></td>
-                                      <td><input type="nickname" class="form-control" id="exampleInputNickname" aria-describedby="nicknameHelp" placeholder="New Nickname"></td>
-                                    </tr>
-                                  </table>
-                                </div>
-                                <div class="form-group">
-                                  <table>
-                                    <tr class="settings_tr">
-                                      <td><label class = "label" for="exampleInputPassword1">Password:</label></td>
-                                      <td>\<input type="password" class="form-control" id="exampleInputPassword" placeholder="New Password"></td>
-                                    </tr>
-                                  </table>
-                                </div>
-                              </form>
-                              <form>
-                                <div class="form-group">
-                                  <h5 id="PrivateKeyTitle">Private Key</h5>
-                                  <table>
-                                    <tr class="settings_tr">
-                                      <td><label class="first_labels" id = "key_size" for="Key_size">Key size:  </label></td>
-                                      <td><input type="key" class="form-control" id="KeySizeConst" aria-describedby="keyHelp" placeholder="2048" disabled="disabled"></td>
-                                    </tr>
-                                  </table>
-                                  </div>
-                                <div class="form-group">
-                                  <table>
-                                    <tr class="settings_tr">
-                                      <td><label class = "label" id="KeyHashAlert" for="exampleInputPassword1">Key Hash:</label></td>
-                                      <td><input readonly type="password" class="form-control" id="KeyHash" placeholder=".......Key Hash.........."></td>
-                                    </tr>
-                                  </table>
-                                </div>
-                                <div class="form-group">
-                                  <table>
-                                    <tr class="settings_tr">
-                                      <td><label class = "label" for="PrivateKeyInfo">Private Key:</label></td>
-                                      <td><button type="button" id="regenerate_button" class="btn btn-success">Regenerate</button></td>
-                                      <td><button type="button" id="import_button" class="btn btn-danger">Export key</button></td>
-                                    </tr>
-                                  </table>
-                                </div>
-                              </form>
-                              <form>
-                                <div class="form-group">
-                                  <h5 id="TelegramBotTitle">Telegram Bot</h5>
-                                  <table>
-                                    <tr class="settings_tr">
-                                      <td><label class="first_labels" for="Key_size">Api Id:</label></td>
-                                      <td><input type="key" id = "bot_api" class="form-control" id="KeySizeConst" aria-describedby="keyHelp" placeholder=".......Api......."></td>
-                                    </tr>
-                                  </table>
-                                </div>
-                              </form>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <button type="button" id = "Save_Changes_Button"class="btn btn-primary2">Save changes</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div> 
                 </div>
             </div>
         </div>
