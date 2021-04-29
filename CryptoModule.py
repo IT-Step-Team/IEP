@@ -1,6 +1,6 @@
 ###########################
 ##  Crypto Module        ##
-##  Version: 2.0.0       ##
+##  Version: 2.1.0       ##
 ##  By: DJI              ##
 ###########################
 
@@ -98,7 +98,7 @@ class keysFile():
         FILE_STRUCTURE['friends_public_keys']        = []
         FILE_STRUCTURE['cryptocurrency_private_keys']= []
         FILE_STRUCTURE['RSA_private_keys']           = {}
-        FILE_STRUCTURE['TelegramBot']                = {'api_id': '', 'api_hash': ''} # Інформація для телеграм бота
+        FILE_STRUCTURE['TelegramBot']                = {'api_id': '', 'api_hash': '', 'password': '', 'phone': ''} # Інформація для телеграм бота
 
         pass_hash = bytes.fromhex(pass_hash) # Перетворив пароль з hex в байти
 
@@ -144,17 +144,11 @@ class keysFile():
         self.NOW_FILE['nickName'] = str(newName)
         self.save()
 
-    def change_password(self, oldPass, newPass):
-        oldPass_hash = SHA3_256.new(data = oldPass.encode('utf-8')).hexdigest()
+    def change_password(self, newPass):
+        newPass_hash = SHA3_256.new(data = newPass.encode('utf-8')).hexdigest()
 
-        if oldPass_hash == self.NOW_FILE['password_hash']:
-            newPass_hash = SHA3_256.new(data = newPass.encode('utf-8')).hexdigest()
-
-            self.NOW_FILE['password_hash'] = newPass_hash
-            self.save()
-
-        else:
-            return False
+        self.NOW_FILE['password_hash'] = newPass_hash
+        self.save()
 
     def add_cryptocurrency_private_key(self, Ctype, name, privKey): #Not Used
         self.NOW_FILE['cryptocurrency_private_keys'].append({'type': Ctype, 'name': name, 'key': privKey})
@@ -203,19 +197,28 @@ class keysFile():
     def get_cryptocurrency_privKeys(self): #Not Used
         return self.NOW_FILE['cryptocurrency_private_keys']
 
+    def get_messages_privKey_hash(self):
+        return SHA3_256.new(data = self.NOW_FILE['RSA_private_keys']['messages'].encode('utf-8')).hexdigest()
+
+    def messages_privKey_regenarate(self):
+        self.NOW_FILE['RSA_private_keys']['messages'] = b64encode(RSA.generate(2048).export_key(self.RSA_PRIV_KEY_TYPE, pkcs=8)).decode('utf-8')
+        self.save()
+
+    def get_messages_privKey_base64(self):
+        return self.NOW_FILE['RSA_private_keys']['messages']
+
     ### Telegram User Bot func ###
 
-    def set_telegram_api(self, id, hash):
+    def set_telegram_api(self, id, hash, password, phone):
         self.NOW_FILE['TelegramBot']['api_id']   = str(id)
         self.NOW_FILE['TelegramBot']['api_hash'] = str(hash)
+        self.NOW_FILE['TelegramBot']['password'] = str(password)
+        self.NOW_FILE['TelegramBot']['phone']    = str(phone)
 
         self.save()
 
-    def get_telegram_api_id(self):
-        return self.NOW_FILE['TelegramBot']['api_id']
-    
-    def get_telegram_api_hash(self):
-        return self.NOW_FILE['TelegramBot']['api_hash']
+    def get_telegram_api(self):
+        return self.NOW_FILE['TelegramBot']
 
     ### Password Check Modal ###
     def get_password_hash(self):
