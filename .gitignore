@@ -5,3 +5,4 @@ test.py
 .vscode
 *.session
 *.session-journal
+.DS_Store
