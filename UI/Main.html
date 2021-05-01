@@ -9,6 +9,7 @@
     <script src="qrcode.min.js"></script>
     <script src="eel.js"></script>
     <script src="Main.js"></script>
+    <script src="Settings.js"></script>
 
     <!-- <link rel = 'icon' type = 'image/png' href="images.jpg"> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
@@ -259,7 +260,7 @@
                   <h5 id="GeneralTitle">General</h5>
                   <table>
                     <tr class="settings_tr">
-                      <td><label class="first_labels" for="exampleInput1">Nickname:</label></td>
+                      <td><label class="first_labels" for="exampleInputNickname">Nickname:</label></td>
                       <td><input type="nickname" class="form-control" id="exampleInputNickname" aria-describedby="nicknameHelp" placeholder="New Nickname"></td>
                     </tr>
                   </table>
@@ -267,8 +268,8 @@
                 <div class="form-group">
                   <table>
                     <tr class="settings_tr">
-                      <td><label class = "label" for="exampleInputPassword1">Password:</label></td>
-                      <td>\<input type="password" class="form-control" id="exampleInputPassword" placeholder="New Password"></td>
+                      <td><label class = "label" for="exampleInputPassword">Password:</label></td>
+                      <td><input type="password" class="form-control" id="exampleInputPassword" placeholder="New Password" value="000000"></td>
                     </tr>
                   </table>
                 </div>
@@ -286,8 +287,8 @@
                 <div class="form-group">
                   <table>
                     <tr class="settings_tr">
-                      <td><label class = "label" id="KeyHashAlert" for="exampleInputPassword1">Key Hash:</label></td>
-                      <td><input readonly type="password" class="form-control" id="KeyHash" placeholder=".......Key Hash.........."></td>
+                      <td><label class = "label" id="KeyHashAlert" for="KeyHash">Key Hash:</label></td>
+                      <td><input readonly type="text" class="form-control" id="KeyHash" placeholder=".......Key Hash.........."></td>
                     </tr>
                   </table>
                 </div>
@@ -295,8 +296,8 @@
                   <table>
                     <tr class="settings_tr">
                       <td><label class = "label" for="PrivateKeyInfo">Private Key:</label></td>
-                      <td><button type="button" id="regenerate_button" class="btn btn-success"><i class="fas fa-cogs"></i> Regenerate</button></td>
-                      <td><button type="button" id="import_button" class="btn btn-danger"><i class="fas fa-file-download"></i> Export key</button></td>
+                      <td><button type="button" id="regenerate_button" class="btn btn-success" onclick="regeneratePrivKey()"><i class="fas fa-cogs"></i> Regenerate</button></td>
+                      <td><button type="button" id="import_button" class="btn btn-danger" onclick="eel.getPrivKey()(exportPrivKey);"><i class="fas fa-file-download"></i> Export key</button></td>
                     </tr>
                   </table>
                 </div>
@@ -306,26 +307,26 @@
                   <h5 id="TelegramBotTitle">Telegram Bot</h5>
                   <table>
                     <tr class="settings_tr">
-                      <td><label class="first_labels" id="Api_Tittle" for="Api_id">Api Id:</label></td>
-                      <td><input type="key" id = "bot_api" class="form-control" aria-describedby="keyHelp" placeholder=".......Api......."></td>
+                      <td><label class="first_labels" id="Api_Tittle" for="api_id">Api Id:</label></td>
+                      <td><input type="key" id = "api_id" class="form-control" aria-describedby="keyHelp" placeholder=".......Api......."></td>
                     </tr>
                   </table>
                   <table>
                     <tr class="settings_tr">
                       <td><label class="first_labels" for="api_hash">Api Hash:</label></td>
-                      <td><input type="key" class="form-control" id = "bot_api_hash" aria-describedby="keyHelp" placeholder=".......api_hash....."></td>
+                      <td><input type="key" class="form-control" id = "api_hash" aria-describedby="keyHelp" placeholder=".......api_hash....."></td>
                     </tr>
                   </table>
                   <table>
                     <tr class="settings_tr">
-                      <td><label class="first_labels" for="bot_password">Password:</label></td>
-                      <td><input type="key" class="form-control" id = "bot_password" aria-describedby="keyHelp" placeholder=".......Password....."></td>
+                      <td><label class="first_labels" for="api_password">Password:</label></td>
+                      <td><input type="key" class="form-control" id = "api_password" aria-describedby="keyHelp" placeholder=".......Password....."></td>
                     </tr>
                   </table>
                   <table>
                     <tr class="settings_tr">
-                      <td><label class="first_labels" for="phone_number">Phone:</label></td>
-                      <td><input type="key" class="form-control" id = "phone_number" aria-describedby="keyHelp" placeholder=".....number...."></td>
+                      <td><label class="first_labels" for="api_phone">Phone:</label></td>
+                      <td><input type="key" class="form-control" id = "api_phone" aria-describedby="keyHelp" placeholder=".....number...."></td>
                     </tr>
                   </table>
                 </div>
@@ -333,11 +334,31 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-              <button type="button" id = "Save_Changes_Button"class="btn btn-primary2"><i class="fas fa-save"></i> Save changes</button>
+              <button type="button" id = "Save_Changes_Button" class="btn btn-primary2" onclick="eel.settingsInit()(saveSettings)"><i class="fas fa-save"></i> Save changes</button>
             </div>
           </div>
         </div>
       </div> 
+
+      <!-- Settings Info Modal-->
+      <div class="modal fade" id="Settings_info_modal" tabindex="-1" role="dialog" aria-labelledby="Settings_info_modal_title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="Settings_info_modal_title"><i class="fas fa-info-circle"></i> Info</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <h3 id="Settings_info_modal_text"></h3>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
 
         <div class="row">
             <div class="col-3">
@@ -347,7 +368,7 @@
                     <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-pubKey" role="tab" aria-controls="v-pills-Encrypt" aria-selected="false">My public key</a>
                     <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-Encrypt" role="tab" aria-controls="v-pills-Encrypt" aria-selected="false">Encrypt</a>
                     <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-Decrypt" role="tab" aria-controls="v-pills-Decrypt" aria-selected="false">Decrypt</a>
-                    <a class="nav-link" id="v-pills-settings-tab" href="#" onclick="$('#settingsModal').modal();">Settings</a>
+                    <a class="nav-link" id="v-pills-settings-tab" href="#" onclick="eel.settingsInit()(initSettings);">Settings</a>
                 </div>
             </div>
             <div class="col-9">

@@ -261,6 +261,7 @@ body {
 }
 
 #pubKey_textarea {
+    text-align: center;
     background-color: #16161b;
     border: 1px solid #32383e;
     color: white;
@@ -386,21 +387,35 @@ body {
 #Api_Tittle{
     width: 60px;
 }
-#bot_api{
+#api_id{
     margin-left: 22px;
     font-family: 'Poppins', sans-serif;
     margin-top: 25px;
     width: 234px;
 }
-#bot_api_hash, #bot_password, #phone_number{
+#api_hash, #api_password, #api_phone{
     margin-top: 18px;
     width: 234px;
 }
-#bot_api_hash{
+#api_hash{
     margin-left: 8px;
 }
-#phone_number{
+#api_phone{
     margin-left: 27px;
 }
 
+/* Settings Info Modal */
 
+#Settings_info_modal_title {
+    color: #28a745;
+}
+
+#Settings_info_modal_text {
+    margin: 0px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif; 
+    font-weight: normal;
+    font-style: normal; 
+    font-size: 20px;
+    color: #28a745;
+}

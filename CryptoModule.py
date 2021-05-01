@@ -204,17 +204,13 @@ class keysFile():
         self.NOW_FILE['RSA_private_keys']['messages'] = b64encode(RSA.generate(2048).export_key(self.RSA_PRIV_KEY_TYPE, pkcs=8)).decode('utf-8')
         self.save()
 
-    def get_messages_privKey_base64(self):
-        return self.NOW_FILE['RSA_private_keys']['messages']
+    def get_messages_privKey_encrypted(self):
+        return Encryption().encryptAES(bytes.fromhex(self.NOW_FILE['password_hash']), self.NOW_FILE['RSA_private_keys']['messages'])
 
     ### Telegram User Bot func ###
 
-    def set_telegram_api(self, id, hash, password, phone):
-        self.NOW_FILE['TelegramBot']['api_id']   = str(id)
-        self.NOW_FILE['TelegramBot']['api_hash'] = str(hash)
-        self.NOW_FILE['TelegramBot']['password'] = str(password)
-        self.NOW_FILE['TelegramBot']['phone']    = str(phone)
-
+    def set_telegram_api(self, data):
+        self.NOW_FILE['TelegramBot'] = data
         self.save()
 
     def get_telegram_api(self):

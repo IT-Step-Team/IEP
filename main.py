@@ -68,5 +68,35 @@ def _Decrypt(cipherText):
     except:
         return False
 
+# Settings #
+@eel.expose
+def settingsInit():
+    data = KEYSFILE.get_telegram_api()
+
+    data['nickName']    = KEYSFILE.get_nickName()
+    data['privKeyHash'] = KEYSFILE.get_messages_privKey_hash()
+
+    return data
+
+@eel.expose
+def saveSettings(data):
+    keys = data.keys()
+
+    if "nickName" in keys:
+        KEYSFILE.change_name(data["nickName"])
+    if "keyPassword" in keys:
+        KEYSFILE.change_password("keyPassword")
+    
+    if "api" in keys:
+        KEYSFILE.set_telegram_api(data["api"])
+
+@eel.expose
+def getPrivKey():
+    return KEYSFILE.get_messages_privKey_encrypted()
+
+@eel.expose
+def regeneratePrivKey():
+    return KEYSFILE.messages_privKey_regenarate()
+
 
 eel.start('Main.html', size = (1000, 800))

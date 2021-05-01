@@ -9,7 +9,7 @@ function qrCode_modal_copy() {
     window.getSelection().removeAllRanges();
 }
 
-function qrCode_modal(data, name, add=" public key:", del=true) {
+function qrCode_modal(data, name, add=" public key:", del=true, correctLevel=QRCode.CorrectLevel.H, width=300, height=300) {
     let old = $('#QRcode_pubKey img');
     if (old != null) {
         old.remove();
@@ -24,6 +24,7 @@ function qrCode_modal(data, name, add=" public key:", del=true) {
     key.value = data;
 
     if (del == true) {
+        delB.style.display = 'block';
         delB.setAttribute("onclick", `del_friend_key('${name}')`);
     } else {
         delB.style.display = 'none';
@@ -31,11 +32,11 @@ function qrCode_modal(data, name, add=" public key:", del=true) {
 
     new QRCode(qr, {
         text: data,
-        width: 300,
-        height: 300,
+        width: width,
+        height: height,
         colorDark : "#ffffff",
         colorLight : "#212529",
-        correctLevel : QRCode.CorrectLevel.H
+        correctLevel : correctLevel
         });
     
     qr.style.title = "";
@@ -89,8 +90,8 @@ function auth(status) {
         let page = document.getElementById('Login_page');
         let main = document.getElementById('Main');
 
-        eel.get_friends_keys() (table_init)
-        eel.get_messages_pubKey() (insert_pubKey)
+        eel.get_friends_keys() (table_init);
+        eel.get_messages_pubKey() (insert_pubKey);
 
         page.style.display = 'none';
         main.style.display = 'block';
@@ -132,6 +133,9 @@ function name_exists(status) {
 function add_friend_key() {
     let name = document.getElementById('Add_Nickname').value;
     let key  = document.getElementById('Add_PubKey').value;
+
+    document.getElementById('Add_Nickname').value = "";
+    document.getElementById('Add_PubKey').value   = "";
 
     if (name == '' || name == ' ' || key == '' || key == ' ') {
         $('#error_addFriend_args').modal();
@@ -191,6 +195,8 @@ function Encrypt_text() {
     text = document.getElementById('Text_to_encrypt').value;
     key  = document.getElementById('Select_pubKeys').value;
 
+    document.getElementById('Text_to_encrypt').value = "";
+
     if (text == '' || text == ' ' || key == '' || key == ' ') {
         $('#error_encryption').modal();
 
@@ -213,6 +219,8 @@ function Decryption_output(Text) {
 
 function Decrypt_text() {
     Ciphertext = document.getElementById('Text_to_decrypt').value;
+
+    document.getElementById('Text_to_decrypt').value = "";
 
     if (Ciphertext == '' || Ciphertext == ' ') {
         $('#error_decryption').modal();
