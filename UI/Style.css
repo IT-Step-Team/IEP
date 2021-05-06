@@ -419,3 +419,10 @@ body {
     font-size: 20px;
     color: #28a745;
 }
+.btn-start_bot{
+    margin-top: 26px;
+    margin-left: 27px;
+    background-color: #28a745;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
